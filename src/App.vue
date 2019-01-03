@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div class="drop-off">
+    <div class="drop-off" v-drop>
       <div class="box" v-drag>
       </div>
     </div>
     <br>
-    <div class="drop-off">
+    <div class="drop-off" v-drop>
       <div class="box" v-drag>
       </div>
     </div> 

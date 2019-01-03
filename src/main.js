@@ -9,14 +9,13 @@ Vue.use(BootstrapVue)
 Vue.directive('drag', {
   bind(el,binding, vnode) {
     el.addEventListener("mousedown",eventHandler)
-
     function eventHandler(event) {
       if(event.type == "mousedown"){
+        // use the following context to emit an event on the vue instance. This is so that the "drop" directive will know what to do 
+        vnode.context.$emit('dragMouseDown')
         el.style.border="3px black solid" 
         document.addEventListener("mousemove",eventHandler)
         document.addEventListener("mouseup",eventHandler)
-        // use the following context to emit an event on the vue instance. This is so that the "drop" directive will know what to do 
-        //vnode.context.$emit(dragMouseDown)
       }else if(event.type == "mousemove" ) {
                 // Get the properties of the current element when the mouse moves
                 var rect = el.getBoundingClientRect()
@@ -27,6 +26,7 @@ Vue.directive('drag', {
                 el.style.left = parseInt(rect.left,10) + (event.clientX - parseInt(rect.left,10) - parseInt(rect.width,10)/2.)+ "px"
                 el.style.top = parseInt(rect.top,10) + (event.clientY - parseInt(rect.top,10) - parseInt(rect.height,10)/2.)+ "px"
       }else if(event.type == "mouseup"){
+        vnode.context.$emit('dragMouseUp')
         // Remove the mousemove listener from the document object so that the element stops following the mouse
         document.removeEventListener("mousemove", eventHandler)
         document.removeEventListener("mouseup", eventHandler)
@@ -36,15 +36,18 @@ Vue.directive('drag', {
         //el.style.top="initial"
       }
     }
-
-    
-
   }
 })
 
 // This directive allows draggable elements to be dropped into the indicated droppable element
 Vue.directive('drop', {
   bind(el,binding, vnode) {
+    vnode.context.$on('dragMouseDown', () => {
+      el.style.backgroundColor = "yellow"
+    })
+    vnode.context.$on('dragMouseUp', () => {
+      el.style.backgroundColor = ""
+    })
     
   }
 })
