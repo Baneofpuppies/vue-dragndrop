@@ -26,10 +26,11 @@ Vue.directive('drag', {
                 el.style.left = parseInt(rect.left,10) + (event.clientX - parseInt(rect.left,10) - parseInt(rect.width,10)/2.)+ "px"
                 el.style.top = parseInt(rect.top,10) + (event.clientY - parseInt(rect.top,10) - parseInt(rect.height,10)/2.)+ "px"
       }else if(event.type == "mouseup"){
-        vnode.context.$emit('dragMouseUp')
+        vnode.context.$emit('dragMouseUp', el)
         // Remove the mousemove listener from the document object so that the element stops following the mouse
         document.removeEventListener("mousemove", eventHandler)
         document.removeEventListener("mouseup", eventHandler)
+        
         el.style.border=""
         el.style.position= "absolute"
         //el.style.left="initial"
@@ -43,10 +44,13 @@ Vue.directive('drag', {
 Vue.directive('drop', {
   bind(el,binding, vnode) {
     vnode.context.$on('dragMouseDown', () => {
-      el.style.backgroundColor = "yellow"
+      // el.style.backgroundColor = "#dddddd"
+      el.style.border = "3px blue solid"
     })
-    vnode.context.$on('dragMouseUp', () => {
+    vnode.context.$on('dragMouseUp', (otherEl) => {
       el.style.backgroundColor = ""
+      el.style.border = ""
+      // otherEl.style.backgroundColor="blue"
     })
     
   }
