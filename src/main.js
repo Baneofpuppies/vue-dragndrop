@@ -48,6 +48,22 @@ Vue.directive('drop', {
       el.style.border = "3px blue solid"
     })
     vnode.context.$on('dragMouseUp', (otherEl) => {
+      // When the dragMouseUp event happens, we want to make this element a parent of the passed 'otherEl' element
+      // First we need to check if the other element is overlapping the current droppable element
+      var otherElRect = otherEl.getBoundingClientRect()
+      var thisElRect = el.getBoundingClientRect()
+      if(thisElRect.x <= otherElRect.x && otherElRect.x <= thisElRect.x + thisElRect.width){
+        console.log("the droppable element left x: " + thisElRect.x)
+        console.log("the droppable element right:" + (thisElRect.x+thisElRect.width))
+        if(thisElRect.y <= otherElRect.y && otherElRect.y <= thisElRect.y + thisElRect.height){
+          console.log("the y checks out")
+        //var newNode = otherEl.cloneNode()
+        el.appendChild(otherEl)
+        console.log("Appended")
+        // otherEl.remove()
+
+        }
+      }
       el.style.backgroundColor = ""
       el.style.border = ""
       // otherEl.style.backgroundColor="blue"
