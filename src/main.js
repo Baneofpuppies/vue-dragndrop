@@ -30,11 +30,11 @@ Vue.directive('drag', {
         // Remove the mousemove listener from the document object so that the element stops following the mouse
         document.removeEventListener("mousemove", eventHandler)
         document.removeEventListener("mouseup", eventHandler)
-        
+        // Reset the properties of the element so that it goes back to where it was 
         el.style.border=""
-        el.style.position= "absolute"
-        //el.style.left="initial"
-        //el.style.top="initial"
+        el.style.position = "relative"
+        el.style.left = ""
+        el.style.top = ""
       }
     }
   }
@@ -53,14 +53,12 @@ Vue.directive('drop', {
       var otherElRect = otherEl.getBoundingClientRect()
       var thisElRect = el.getBoundingClientRect()
       if(thisElRect.x <= otherElRect.x && otherElRect.x <= thisElRect.x + thisElRect.width){
-        console.log("the droppable element left x: " + thisElRect.x)
-        console.log("the droppable element right:" + (thisElRect.x+thisElRect.width))
+        // If the draggable element is within both the x and y bounds of the droppable element, then append it inside the droppable element:
         if(thisElRect.y <= otherElRect.y && otherElRect.y <= thisElRect.y + thisElRect.height){
           console.log("the y checks out")
         //var newNode = otherEl.cloneNode()
         el.appendChild(otherEl)
         console.log("Appended")
-        // otherEl.remove()
 
         }
       }
