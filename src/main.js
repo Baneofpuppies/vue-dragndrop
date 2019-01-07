@@ -44,7 +44,6 @@ Vue.directive('drag', {
 Vue.directive('drop', {
   bind(el,binding, vnode) {
     vnode.context.$on('dragMouseDown', () => {
-      // el.style.backgroundColor = "#dddddd"
       el.style.border = "3px blue solid"
     })
     vnode.context.$on('dragMouseUp', (otherEl) => {
@@ -55,16 +54,13 @@ Vue.directive('drop', {
       if(thisElRect.x <= otherElRect.x && otherElRect.x <= thisElRect.x + thisElRect.width){
         // If the draggable element is within both the x and y bounds of the droppable element, then append it inside the droppable element:
         if(thisElRect.y <= otherElRect.y && otherElRect.y <= thisElRect.y + thisElRect.height){
-          console.log("the y checks out")
-        //var newNode = otherEl.cloneNode()
+        // Append the draggable element into the droppable element.
         el.appendChild(otherEl)
-        console.log("Appended")
-
         }
       }
+      // Remove CSS properties on the droppable element
       el.style.backgroundColor = ""
       el.style.border = ""
-      // otherEl.style.backgroundColor="blue"
     })
     
   }
